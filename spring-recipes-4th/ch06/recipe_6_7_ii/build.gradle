@@ -34,4 +34,5 @@ dependencies {
     compile "com.fasterxml.jackson.core:jackson-databind:2.9.3"
     compile "org.postgresql:postgresql:42.1.4"
     compile "org.slf4j:slf4j-simple:1.7.25"
+    runtime "com.h2database:h2:1.4.196"
 }

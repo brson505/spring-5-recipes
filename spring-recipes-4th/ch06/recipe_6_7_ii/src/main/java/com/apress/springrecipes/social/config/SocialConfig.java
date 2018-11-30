@@ -11,6 +11,8 @@ import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
+import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 import org.springframework.jdbc.datasource.init.DataSourceInitializer;
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import org.springframework.security.crypto.encrypt.Encryptors;
@@ -48,14 +50,23 @@ public class SocialConfig extends SocialConfigurerAdapter {
         return new JdbcUsersConnectionRepository(dataSource(), connectionFactoryLocator, Encryptors.noOpText());
     }
 
-    @Bean
-    public DataSource dataSource() {
+    //@Bean
+    public DataSource dataSource2() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setUrl(env.getRequiredProperty("datasource.url"));
         dataSource.setUsername(env.getRequiredProperty("datasource.username"));
         dataSource.setPassword(env.getRequiredProperty("datasource.password"));
         dataSource.setDriverClassName(env.getProperty("datasource.driverClassName"));
         return dataSource;
+    }
+    
+    @Bean
+    public DataSource dataSource() {
+	    return new EmbeddedDatabaseBuilder()
+	            .setType(EmbeddedDatabaseType.H2)
+	            .setName("social")
+	            //.addScript("classpath:/schema.sql")
+	            .build();
     }
 
     @Bean
